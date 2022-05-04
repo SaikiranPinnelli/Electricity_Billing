@@ -22,7 +22,7 @@ public class User extends Details {
 			user="root";// 4
 			password="Qwertyuiop1!";// 5
 			con=DriverManager.getConnection(url,user,password); 
-                       fetchUserDetails();
+                       checkDetails();
 					
 						System.out.println("If u wnt to see status of the payment, type'1'"
 								+ " and if u want to exit press any of 3,4,5,6,7,8 or 9::");
@@ -30,7 +30,7 @@ public class User extends Details {
 						int choice=sc.nextInt();
 						switch(choice){
 						case 1:
-							Bill_Paid();
+							check_Paid();
 							break;
 						
 						
@@ -42,7 +42,7 @@ public class User extends Details {
 			catch(Exception e) {
 				e.printStackTrace();
 	}}
-		protected static void fetchUserDetails() throws Exception {
+		protected static void checkDetails() throws Exception {
 		
 		String s1 ="select * from bill where cus_id = ?";
 			System.out.println("Fetching User details: ");
@@ -59,7 +59,7 @@ public class User extends Details {
 				System.exit(0);
 			}
 		}
-		protected static void Bill_Paid() throws Exception{
+		protected static void check_Paid() throws Exception{
 			
 			
 			String s1 ="select * from bill where cus_id = ?";
