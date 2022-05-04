@@ -1,24 +1,66 @@
-package ElectricityBillSystem.Bill;
-
-    //import java.sql.Connection;
-    //import java.util.*;
+package Electricity_Billing;
+	import java.time.*;
+	import java.sql.Connection;
+	import java.util.*;
 	import java.sql.DriverManager;
 	import java.sql.PreparedStatement;
 	import java.sql.Statement;
 	import java.sql.ResultSet;
-
-	public class Admin_Bill extends User{
+	abstract class Details1{
+		protected static Connection con=null;
+		protected static Scanner sc=new Scanner(System.in);
+		protected String user,password,url;
+		//abstract void operations();
+	}
+	public class Admin_Bill extends Details1{
 		//protected static Connection con =null;
 		//protected static Scanner sc = new Scanner(System.in);
-		 public static void Credentials() throws Exception{
-			System.out.println("Enter the username: ");
-			final String user=sc.next();
-			System.out.println("Enter your password: ");
-			final String password=sc.next();
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			String url="jdbc:mysql://localhost:3306/rahul_revature";
-			con=DriverManager.getConnection(url,user,password);
-		 }
+		public void operations() {
+			System.out.println("Enter your password:");
+			String passwrd=sc.next();
+			if(passwrd.equals("Saikiran.123@")==false) {
+				System.out.println("Wrong password...");
+				System.exit(0);
+			}
+			try {
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		url="jdbc:mysql://localhost:3306/fprojectONE";
+		user="root";
+		password="Qwertyuiop1!";
+		con=DriverManager.getConnection(url,user,password);
+		int f=0;
+		while(f==0) {
+		System.out.println("If u wnt to insert , type'1',"
+				+ "delete  type '2' , "
+				+ "update  '3', To see Records type '4', to Exit press '0','5','6','7','8','9'");
+		System.out.println("Insert choice:");
+		int choice=sc.nextInt();
+		switch(choice){
+		case 1:
+			InsertRecord();
+			
+			break;
+		
+		case 2:
+			DeleteRecord();
+			break;
+		case 3:
+			UpdateRecord();
+			break;
+		case 4:
+			ShowRecord();
+			break;
+		default:
+			f=1;
+			System.out.println("Exit.....:");
+			System.exit(0);
+		}
+		}
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+}
 
 			protected static void InsertRecord() throws Exception {
 				System.out.println("Enter the number of records to insert :");
@@ -29,26 +71,23 @@ package ElectricityBillSystem.Bill;
 				String s1="insert into bill values(?,?,?,?,?,?,?)";
 				PreparedStatement pre= con.prepareStatement(s1);
 				System.out.println("Enter customer id");
-				int id=sc.nextInt();
+				String id=sc.nextLine();
 				System.out.println("Enter customer name");
 				String name=sc.next();
-				System.out.println("Enter customer address");
-				String address=sc.next();
 				System.out.println("Enter customer phone no");
-				long phone_no=sc.nextLong();
-				System.out.println("Enter customer payment date");
-				String date=sc.next();
+				String phone_no=sc.nextLine();
+				String date=LocalDateTime.now().toString();
+				
 				System.out.println("Enter the units consumed");
 				int units=sc.nextInt();
-				System.out.println("Enter the amount per unit");
-				int amtperunit=sc.nextInt();
-				pre.setInt(1, id);
+				
+				pre.setString(1, id);
 				pre.setString(2,name);
-				pre.setString(3,address);
-				pre.setLong(4,phone_no);
-				pre.setString(5,date);
-				pre.setInt(6,units);
-				pre.setInt(7,amtperunit);
+				
+				pre.setString(3,phone_no);
+				pre.setString(4,date);
+				pre.setInt(5,units);
+				
 				int rows =pre.executeUpdate();
 				if(rows>0) {
 					System.out.println("Record inserted succesfully");
@@ -61,11 +100,11 @@ package ElectricityBillSystem.Bill;
 			protected static void ShowRecord() throws Exception{
 			System.out.println("Fetching the customer bill details:");
 			System.out.println();
-			String sq="select *,(units*amt_per_unit) as total_amt from bill";
+			String sq="select * from bill";
 			Statement st= con.createStatement();
 			ResultSet rt=st.executeQuery(sq);
 			while(rt.next()) {
-				System.out.println(rt.getString(1)+ " || " + rt.getString(2)+ " || " + rt.getString(3)+ "|| " +rt.getString(4)+ " || " + rt.getString(5)+ " || " +rt.getString(6)+ " || " +rt.getString(7)+ " || " +rt.getString(8));
+				System.out.println(rt.getString(1)+ " || " + rt.getString(2)+ " || " + rt.getString(3)+ "|| " +rt.getString(4)+ " || " + rt.getInt(5));
 			}
 			}
 			
@@ -82,11 +121,11 @@ package ElectricityBillSystem.Bill;
 			if(rows>0) {
 				System.out.println("Record updated succesfully");
 			}
-			String sq="select *,(units*amt_per_unit) as total_amt from bill";
+			String sq="select * from bill";
 			Statement st= con.createStatement();
 			ResultSet rt=st.executeQuery(sq);
 			while(rt.next()) {
-				System.out.println(rt.getString(1)+ " || " + rt.getString(2)+ " || " + rt.getString(3)+ "|| " +rt.getString(4)+ " || " + rt.getString(5)+ " || " +rt.getString(6)+ " || " +rt.getString(7)+ " || " +rt.getString(8));
+				System.out.println(rt.getString(1)+ " || " + rt.getString(2)+ " || " + rt.getString(3)+ "|| " +rt.getString(4)+ " || " + rt.getString(5));
 			}
 		}
 		protected static void DeleteRecord() throws Exception {
@@ -104,11 +143,11 @@ package ElectricityBillSystem.Bill;
 			}
 			if(rows>0) {
 			System.out.println(" After deleting : ");
-			String sq="select *,(units*amt_per_unit) as total_amt from bill";
+			String sq="select * from bill";
 			Statement st= con.createStatement();
 			ResultSet rt=st.executeQuery(sq);
 			while(rt.next()) {
-				System.out.println(rt.getString(1)+ " || " + rt.getString(2)+ " || " + rt.getString(3)+ "|| " +rt.getString(4)+ " || " + rt.getString(5)+ " || " +rt.getString(6)+ " || " +rt.getString(7)+ " || " +rt.getString(8));
+				System.out.println(rt.getString(1)+ " || " + rt.getString(2)+ " || " + rt.getString(3)+ "|| " +rt.getString(4)+ " || " + rt.getString(5));
 			}
 		}
 		}
