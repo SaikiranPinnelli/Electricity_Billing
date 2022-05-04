@@ -5,7 +5,6 @@
 # Contains Two Modules
 
 ## Admin Bill 
-- Customer login
 - Add Record
 - Delete Record
 - Update Record
@@ -13,8 +12,8 @@
 - Exit
 
 ## User Bill
-- Fetch Bill
-- Bill Paid
+- check user details
+- check bill Paid
 - Exit
 
 # Technologies used:
