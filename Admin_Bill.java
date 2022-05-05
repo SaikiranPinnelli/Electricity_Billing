@@ -24,9 +24,9 @@ package Electricity_Billing;
 			}
 			try {
 		Class.forName("com.mysql.cj.jdbc.Driver");
-		url="jdbc:mysql://localhost:3306/fprojectONE";
+		url="jdbc:mysql://localhost:3306/db";
 		user="root";
-		password="Qwertyuiop1!";
+		password="Saikiran.123@";
 		con=DriverManager.getConnection(url,user,password);
 		int f=0;
 		while(f==0) {
@@ -63,19 +63,16 @@ package Electricity_Billing;
 }
 
 			protected static void InsertRecord() throws Exception {
-				System.out.println("Enter the number of records to insert :");
-				int n=sc.nextInt();
-				int i=1;
-				while(i<=n) {
+			
 				System.out.println("Enter the customer bill details");
-				String s1="insert into bill values(?,?,?,?,?,?,?)";
+				String s1="insert into bill values(?,?,?,?,?)";
 				PreparedStatement pre= con.prepareStatement(s1);
 				System.out.println("Enter customer id");
-				String id=sc.nextLine();
+				String id=sc.next();
 				System.out.println("Enter customer name");
 				String name=sc.next();
 				System.out.println("Enter customer phone no");
-				String phone_no=sc.nextLine();
+				String phone_no=sc.next();
 				String date=LocalDateTime.now().toString();
 				
 				System.out.println("Enter the units consumed");
@@ -93,8 +90,6 @@ package Electricity_Billing;
 					System.out.println("Record inserted succesfully");
 					System.out.println();
 				}
-				i++;
-				}
 				
 			}
 			protected static void ShowRecord() throws Exception{
@@ -109,14 +104,15 @@ package Electricity_Billing;
 			}
 			
 		protected static void UpdateRecord() throws Exception{
+			System.out.println("Enter customer id: ");
+			String id=sc.next();
 			System.out.println("Enter name: ");
 			String name =sc.next();
-			System.out.println("Enter customer id: ");
-			int id=sc.nextInt();
-			String sq1="update  bill set cus_name= ? where cus_id=?";
+			
+			String sq1="update  bill set name= ? where cus_id=?";
 			PreparedStatement pq =con.prepareStatement(sq1);
 			pq.setString(1,name);
-			pq.setInt(2, id);
+			pq.setString(2, id);
 			int rows =pq.executeUpdate();
 			if(rows>0) {
 				System.out.println("Record updated succesfully");
@@ -130,10 +126,10 @@ package Electricity_Billing;
 		}
 		protected static void DeleteRecord() throws Exception {
 			System.out.println("Enter customer id: ");
-			int id =sc.nextInt();
+			String id =sc.next();
 			String sq1="delete from bill where cus_id=?";
 			PreparedStatement pq =con.prepareStatement(sq1);
-			pq.setInt(1,id);
+			pq.setString(1,id);
 			int rows =pq.executeUpdate();
 			if(rows>0) {
 				System.out.println("Record deleted succesfully");
